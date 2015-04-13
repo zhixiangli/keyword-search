@@ -48,6 +48,9 @@ public class AhoCorasickAutomaton {
      *            string array.
      */
     public void add(CharSequence[] stringArray) {
+        if (null == stringArray) {
+            throw new IllegalArgumentException();
+        }
         this.init();
         if (null != stringArray) {
             for (int i = 0; i < stringArray.length; ++i) {
@@ -64,8 +67,11 @@ public class AhoCorasickAutomaton {
      * @param stringCollection
      *            string collection.
      */
-    public void add(Collection<CharSequence> stringCollection) {
-        this.add(stringCollection.toArray(new CharSequence[0]));
+    public void add(Collection<? extends CharSequence> stringCollection) {
+        if (null == stringCollection) {
+            throw new IllegalArgumentException();
+        }
+        this.add(stringCollection.stream().toArray(CharSequence[]::new));
     }
     
     /**
@@ -77,6 +83,9 @@ public class AhoCorasickAutomaton {
      * @return true if this charSequence contains some string.
      */
     public boolean contains(CharSequence charSequence) {
+        if (null == charSequence) {
+            return false;
+        }
         TrieNode current = this.root;
         for (int i = 0; i < charSequence.length(); ++i) {
             int j = charSequence.charAt(i);
@@ -110,6 +119,9 @@ public class AhoCorasickAutomaton {
      *            char sequence.
      */
     private void add(CharSequence charSequence) {
+        if (null == charSequence) {
+            return;
+        }
         TrieNode current = this.root;
         for (int i = 0; i < charSequence.length(); ++i) {
             int j = charSequence.charAt(i);

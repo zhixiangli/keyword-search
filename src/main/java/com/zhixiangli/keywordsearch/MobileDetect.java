@@ -3,8 +3,12 @@
  */
 package com.zhixiangli.keywordsearch;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
- * determine the type of mobile device.
+ * determine the type of device, mobile or pc.
  * 
  * @author lizhixiang
  *
@@ -14,21 +18,25 @@ public class MobileDetect {
     /**
      * ac automaton.
      */
-    private static final AhoCorasickAutomaton AC_AUTOMATON = new AhoCorasickAutomaton();
+    private static final AhoCorasickAutomaton AHO_CORASICK_AUTOMATON = new AhoCorasickAutomaton();
     
     /**
-     * keyword of mobile agent.
+     * mobile keywords.
      */
-    private static final String MOBILE_AGENT = "Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini";
+    private static final String[] MOBILE_KEYWORDS = new String[] { "android", "webos", "iphone",
+        "ipad", "ipod", "pocket", "psp", "kindle", "avantgo", "blazer", "midori", "tablet", "palm",
+        "maemo", "plucker", "phone", "blackberry", "symbian", "iemobile", "mobile", "zunewp7",
+        "windows phone", "opera mini" };
     
     static {
-        String[] mobileAgent = MOBILE_AGENT.toLowerCase().split("\\|");
-        AC_AUTOMATON.add(mobileAgent);
+        List<String> mobileKeywords = Arrays.stream(MOBILE_KEYWORDS).map(String::toLowerCase)
+            .collect(Collectors.toList());
+        AHO_CORASICK_AUTOMATON.add(mobileKeywords);
     }
     
     /**
      * 
-     * determine the type of mobile device.
+     * determine the type of device, mobile or pc.
      * 
      * @param userAgent
      *            user agent.
@@ -38,7 +46,13 @@ public class MobileDetect {
         if (null == userAgent) {
             throw new IllegalArgumentException();
         }
-        return AC_AUTOMATON.contains(userAgent.toString().toLowerCase());
+        String userAgentString = null;
+        if (String.class.equals(userAgent.getClass())) {
+            userAgentString = (String) userAgent;
+        } else {
+            userAgentString = userAgent.toString();
+        }
+        return AHO_CORASICK_AUTOMATON.contains(userAgentString.toLowerCase());
     }
     
 }

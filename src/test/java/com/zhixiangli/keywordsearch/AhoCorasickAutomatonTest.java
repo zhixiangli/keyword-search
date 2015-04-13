@@ -26,7 +26,7 @@ public class AhoCorasickAutomatonTest {
         AhoCorasickAutomaton ac = new AhoCorasickAutomaton();
         
         // number of test case.
-        int cnt = Short.MAX_VALUE;
+        int cnt = Byte.MAX_VALUE;
         while (cnt-- > 0) {
             
             // keywords.
