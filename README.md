@@ -1,4 +1,4 @@
-# keyword-search
+keyword-search
 ===============
 
 
@@ -16,4 +16,4 @@ JDK 1.8+
 
 ##instructions
 
-see ***[keyword-search](https://github.com/zhixiangli/keyword-search)***
+see **[keyword-search](https://github.com/zhixiangli/keyword-search)**
