@@ -47,11 +47,11 @@ public class AhoCorasickAutomatonTest {
             long nd;
             
             // first way: indexOf.
-            boolean flag0 = false;
+            boolean result0 = false;
             st = System.nanoTime();
             for (int i = 0; i < keywords.length; ++i) {
                 if (sb.indexOf(keywords[i]) >= 0) {
-                    flag0 = true;
+                    result0 = true;
                     break;
                 }
             }
@@ -61,14 +61,15 @@ public class AhoCorasickAutomatonTest {
             // second way: ac automaton.
             ac.add(keywords);
             st = System.nanoTime();
-            boolean flag1 = ac.contains(sb);
+            boolean result1 = ac.contains(sb);
             nd = System.nanoTime();
             long t1 = nd - st;
             
             // output.
-            assertEquals(flag1, flag0);
-            System.out.println(String.format("time: %d, result: %d", t0 / t1, flag1 ? 1 : 0));
+            assertEquals(result1, result0);
+            System.out.println(String.format("time: %d, result: %d", t0 / t1, result1 ? 1 : 0));
         }
+        
     }
     
 }
