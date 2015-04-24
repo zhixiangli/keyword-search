@@ -4,7 +4,7 @@ keyword-search
 
 ***[Chinese version](http://www.zhixiangli.com)***
 
-Keyword search is implemented by ac automation, with a case of distinguishing device type, mobile or pc.
+Keyword search is implemented by Aho-Corasick Automaton, with a case of mobile detect.
 
 Time Complexity: O(n), faster than any other ways. 
 

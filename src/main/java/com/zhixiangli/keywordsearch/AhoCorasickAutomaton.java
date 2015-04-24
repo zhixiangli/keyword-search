@@ -19,7 +19,7 @@ public class AhoCorasickAutomaton {
     /**
      * default character range of trie.
      */
-    private int characterRange = Byte.MAX_VALUE + 1;
+    private int characterRange = 1 << 8;
     
     /**
      * if locked, characterRange can not be changed.
@@ -53,9 +53,7 @@ public class AhoCorasickAutomaton {
         }
         this.init();
         if (null != stringArray) {
-            for (int i = 0; i < stringArray.length; ++i) {
-                this.add(stringArray[i]);
-            }
+            Arrays.stream(stringArray).forEach(str -> this.add(str));
         }
         this.build();
     }

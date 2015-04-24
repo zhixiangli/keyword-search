@@ -44,7 +44,7 @@ public class MobileDetect {
      */
     public static boolean isMobile(CharSequence userAgent) {
         if (null == userAgent) {
-            throw new IllegalArgumentException();
+            return false;
         }
         String userAgentString = null;
         if (String.class.equals(userAgent.getClass())) {
