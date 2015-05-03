@@ -2,11 +2,11 @@ keyword-search
 ===============
 
 
-***[Chinese version](http://www.zhixiangli.com)***
+***[Chinese Version](http://www.zhixiangli.com/2015/04/13/%E5%A4%9A%E5%85%B3%E9%94%AE%E8%AF%8D%E5%8C%B9%E9%85%8D/)***
 
-Keyword search is implemented by Aho-Corasick Automaton, with a case of mobile detect.
+Keyword search is implemented with Aho-Corasick Automaton, with a case of mobile detect.
 
-Time Complexity: O(n), faster than any other ways. 
+Time Complexity: O(n), faster than other algorithms. 
 
 
 ##environmental requirements
