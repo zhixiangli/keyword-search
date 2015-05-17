@@ -3,12 +3,12 @@
  */
 package com.zhixiangli.keywordsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 /**
- * TODO
+ * test of mobile detect.
  * 
  * @author lizhixiang
  *
@@ -23,9 +23,10 @@ public class MobileDetectTest {
             "Mozilla/5.0 (Linux; U; Android 4.1; zh-cn; Lenovo-P770/S100) AppleWebKit/534.30 (KHTML, like Gecko)",
             "Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206",
             "UCWEB/2.0 (iOS; U; iPh OS 6_1_1; zh-CN; iPh4,1) U2/1.0.0 UCBrowser/9.0.1.284 U2/1.0.0 Mobile", };
-        boolean[] answer = new boolean[] { false, false, true, true, true };
+        Integer[] answer = new Integer[] { 0, 0, 1, 1, 1 };
         for (int i = 0; i < userAgent.length; ++i) {
-            assertEquals(answer[i], MobileDetect.isMobile(userAgent[i]));
+            Integer isMobile = MobileDetect.isMobile(userAgent[i]);
+            assertEquals(answer[i], isMobile);
         }
     }
     

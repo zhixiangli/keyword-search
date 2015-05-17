@@ -3,12 +3,17 @@
  */
 package com.zhixiangli.keywordsearch;
 
-import java.util.Arrays;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- * determine the type of device, mobile or pc.
+ * mobile detect.
  * 
  * @author lizhixiang
  *
@@ -16,43 +21,36 @@ import java.util.stream.Collectors;
 public class MobileDetect {
     
     /**
-     * ac automaton.
+     * logger.
      */
-    private static final AhoCorasickAutomaton AHO_CORASICK_AUTOMATON = new AhoCorasickAutomaton();
+    private static final Logger LOGGER = LoggerFactory.getLogger(MobileDetect.class);
     
     /**
-     * mobile keywords.
+     * keyword search class.
      */
-    private static final String[] MOBILE_KEYWORDS = new String[] { "android", "webos", "iphone",
-        "ipad", "ipod", "pocket", "psp", "kindle", "avantgo", "blazer", "midori", "tablet", "palm",
-        "maemo", "plucker", "phone", "blackberry", "symbian", "iemobile", "mobile", "zunewp7",
-        "windows phone", "opera mini" };
+    private static final KeywordSearch KEYWORD_SEARCH = new KeywordSearch();
     
     static {
-        List<String> mobileKeywords = Arrays.stream(MOBILE_KEYWORDS).map(String::toLowerCase)
-            .collect(Collectors.toList());
-        AHO_CORASICK_AUTOMATON.add(mobileKeywords);
+        try {
+            List<String> mobileKeywords = Files
+                .lines(Paths.get("src/main/resources/mobile_keywords")).map(String::toLowerCase)
+                .distinct().collect(Collectors.toList());
+            KEYWORD_SEARCH.add(mobileKeywords);
+        } catch (IOException e) {
+            LOGGER.error("MobileDetect failed to initialize: {}", e);
+        }
     }
     
     /**
      * 
-     * determine the type of device, mobile or pc.
+     * the user agent is from mobile?
      * 
      * @param userAgent
      *            user agent.
-     * @return true if is mobile device.
+     * @return ERROR, TRUE, FALSE.
      */
-    public static boolean isMobile(CharSequence userAgent) {
-        if (null == userAgent) {
-            return false;
-        }
-        String userAgentString = null;
-        if (String.class.equals(userAgent.getClass())) {
-            userAgentString = (String) userAgent;
-        } else {
-            userAgentString = userAgent.toString();
-        }
-        return AHO_CORASICK_AUTOMATON.contains(userAgentString.toLowerCase());
+    public static int isMobile(String userAgent) {
+        return KEYWORD_SEARCH.contains(userAgent);
     }
     
 }

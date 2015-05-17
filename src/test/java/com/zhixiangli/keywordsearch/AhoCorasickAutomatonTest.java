@@ -1,6 +1,6 @@
 package com.zhixiangli.keywordsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.security.SecureRandom;
 import java.util.Random;
@@ -19,10 +19,10 @@ import org.junit.Test;
  */
 public class AhoCorasickAutomatonTest {
     
-    private static final Random RANDOM = new SecureRandom();
-    
     @Test
     public void test() {
+        Random random = new SecureRandom();
+        
         AhoCorasickAutomaton ac = new AhoCorasickAutomaton();
         
         // number of test case.
@@ -30,16 +30,16 @@ public class AhoCorasickAutomatonTest {
         while (cnt-- > 0) {
             
             // keywords.
-            String[] keywords = new String[RANDOM.nextInt(Short.MAX_VALUE) + 1];
+            String[] keywords = new String[random.nextInt(Short.MAX_VALUE) + 1];
             for (int i = 0; i < keywords.length; ++i) {
-                keywords[i] = String.valueOf(RANDOM.nextInt(Integer.MAX_VALUE));
+                keywords[i] = String.valueOf(random.nextInt(Integer.MAX_VALUE));
             }
             
             // char sequence.
             StringBuilder sb = new StringBuilder();
-            int length = RANDOM.nextInt(Short.MAX_VALUE) + 1;
+            int length = random.nextInt(Short.MAX_VALUE) + 1;
             for (int i = 0; i < length; ++i) {
-                sb.append(RANDOM.nextInt(10));
+                sb.append(random.nextInt(10));
             }
             
             // timer.
@@ -59,7 +59,9 @@ public class AhoCorasickAutomatonTest {
             long t0 = nd - st;
             
             // second way: ac automaton.
+            ac.init();
             ac.add(keywords);
+            ac.build();
             st = System.nanoTime();
             boolean result1 = ac.contains(sb);
             nd = System.nanoTime();
@@ -67,7 +69,8 @@ public class AhoCorasickAutomatonTest {
             
             // output.
             assertEquals(result1, result0);
-            System.out.println(String.format("time: %d, result: %d", t0 / t1, result1 ? 1 : 0));
+            System.out.println(String.format("time: %f, result: %d", 1.0 * t0 / t1, result1 ? 1
+                : 0));
         }
         
     }

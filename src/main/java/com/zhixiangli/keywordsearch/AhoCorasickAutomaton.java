@@ -4,7 +4,6 @@
 package com.zhixiangli.keywordsearch;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -17,14 +16,9 @@ import java.util.Queue;
 public class AhoCorasickAutomaton {
     
     /**
-     * default character range of trie.
+     * character range of all the string.
      */
-    private int characterRange = 1 << 8;
-    
-    /**
-     * if locked, characterRange can not be changed.
-     */
-    private boolean isLocked = false;
+    private final int characterRange;
     
     /**
      * root of trie.
@@ -32,17 +26,43 @@ public class AhoCorasickAutomaton {
     private TrieNode root = null;
     
     /**
+     * constructor.
+     */
+    public AhoCorasickAutomaton() {
+        this(1 << 8);
+    }
+    
+    /**
+     * @param characterRange
+     *            the range of character.
+     */
+    public AhoCorasickAutomaton(int characterRange) {
+        this.characterRange = characterRange;
+    }
+    
+    /**
      * 
      * clear the trie.
      */
     public void clear() {
         this.root = null;
-        this.isLocked = false;
     }
     
     /**
      * 
-     * clear and add all the string to trie.
+     * initialization.
+     */
+    public void init() {
+        this.root = new TrieNode();
+        this.root.fail = this.root;
+        
+        // root.next is null when root is initialized.
+        Arrays.fill(this.root.next, this.root);
+    }
+    
+    /**
+     * 
+     * add all the string to trie.
      * 
      * @param stringArray
      *            string array.
@@ -51,30 +71,37 @@ public class AhoCorasickAutomaton {
         if (null == stringArray) {
             throw new IllegalArgumentException();
         }
-        this.init();
-        if (null != stringArray) {
-            Arrays.stream(stringArray).forEach(str -> this.add(str));
-        }
-        this.build();
+        Arrays.stream(stringArray).forEach(str -> this.add(str));
     }
     
     /**
      * 
-     * clear and add all the string to trie.
+     * add the char sequence to trie.
      * 
-     * @param stringCollection
-     *            string collection.
+     * @param charSequence
+     *            char sequence.
      */
-    public void add(Collection<? extends CharSequence> stringCollection) {
-        if (null == stringCollection) {
-            throw new IllegalArgumentException();
+    public void add(CharSequence charSequence) {
+        if (null == charSequence) {
+            return;
         }
-        this.add(stringCollection.stream().toArray(CharSequence[]::new));
+        TrieNode current = this.root;
+        for (int i = 0; i < charSequence.length(); ++i) {
+            int j = charSequence.charAt(i);
+            if (j >= this.characterRange) {
+                throw new IllegalArgumentException();
+            }
+            if (this.root == current.next[j]) {
+                current.next[j] = new TrieNode();
+            }
+            current = current.next[j];
+        }
+        current.isEnd = true;
     }
     
     /**
      * 
-     * whether char sequence contains some string in trie.
+     * whether the char sequence contains some string in trie.
      * 
      * @param charSequence
      *            char sequence.
@@ -100,45 +127,9 @@ public class AhoCorasickAutomaton {
     
     /**
      * 
-     * initialization.
-     */
-    private void init() {
-        this.isLocked = true;
-        this.root = new TrieNode();
-        this.root.fail = this.root;
-        Arrays.fill(this.root.next, this.root);
-    }
-    
-    /**
-     * 
-     * add the char sequence to trie.
-     * 
-     * @param charSequence
-     *            char sequence.
-     */
-    private void add(CharSequence charSequence) {
-        if (null == charSequence) {
-            return;
-        }
-        TrieNode current = this.root;
-        for (int i = 0; i < charSequence.length(); ++i) {
-            int j = charSequence.charAt(i);
-            if (j >= this.characterRange) {
-                throw new IllegalArgumentException();
-            }
-            if (this.root == current.next[j]) {
-                current.next[j] = new TrieNode();
-            }
-            current = current.next[j];
-        }
-        current.isEnd = true;
-    }
-    
-    /**
-     * 
      * build fail pointer.
      */
-    private void build() {
+    public void build() {
         Queue<TrieNode> queue = new LinkedList<>();
         queue.add(this.root);
         while (!queue.isEmpty()) {
@@ -156,24 +147,6 @@ public class AhoCorasickAutomaton {
                 }
             }
         }
-    }
-    
-    /**
-     * setter method for property characterRange
-     * 
-     * @param characterRange
-     *            the characterRange to set
-     * @throws IllegalAccessException
-     *             if is locked.
-     */
-    public void setCharacterRange(int characterRange) throws IllegalAccessException {
-        if (this.isLocked) {
-            throw new IllegalAccessException();
-        }
-        if (characterRange <= 0) {
-            throw new IllegalArgumentException();
-        }
-        this.characterRange = characterRange;
     }
     
     /**
@@ -207,7 +180,9 @@ public class AhoCorasickAutomaton {
             this.isEnd = false;
             this.fail = root;
             this.next = new TrieNode[characterRange];
-            Arrays.fill(this.next, root);
+            if (null != root) {
+                Arrays.fill(this.next, root);
+            }
         }
         
     }
