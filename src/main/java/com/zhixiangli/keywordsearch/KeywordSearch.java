@@ -96,10 +96,10 @@ public class KeywordSearch {
         }
         try {
             boolean contains = ahoCorasickAutomaton.contains(str.toLowerCase());
-            LOGGER.info("MobileDetect:{},{}", str, contains);
+            LOGGER.info("KeywordSearch:{},{}", str, contains);
             return contains ? TRUE : FALSE;
         } catch (Exception e) {
-            LOGGER.error("MobileDetect:{},{}", str, e);
+            LOGGER.error("KeywordSearch:{},{}", str, e);
             return ERROR;
         }
     }
