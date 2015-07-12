@@ -69,8 +69,7 @@ public class AhoCorasickAutomatonTest {
             
             // output.
             assertEquals(result1, result0);
-            System.out.println(String.format("time: %f, result: %d", 1.0 * t0 / t1, result1 ? 1
-                : 0));
+            System.out.println(String.format("time: %f, result: %d", 1.0 * t0 / t1, result1 ? 1 : 0));
         }
         
     }

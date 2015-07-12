@@ -23,21 +23,6 @@ public class KeywordSearch {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeywordSearch.class);
     
     /**
-     * contains keywords.
-     */
-    public static final int TRUE = 1;
-    
-    /**
-     * not contain keywords.
-     */
-    public static final int FALSE = 0;
-    
-    /**
-     * error occurred.
-     */
-    public static final int ERROR = -1;
-    
-    /**
      * ac automaton.
      */
     private final AhoCorasickAutomaton ahoCorasickAutomaton;
@@ -88,19 +73,19 @@ public class KeywordSearch {
      * 
      * @param str
      *            string to be checked.
-     * @return ERROR, TRUE, FALSE.
+     * @return ERROR, NOT_CONTAIN, CONTAIN.
      */
-    public int contains(String str) {
+    public Result contains(String str) {
         if (null == str) {
-            return ERROR;
+            return Result.NOT_CONTAIN;
         }
         try {
             boolean contains = ahoCorasickAutomaton.contains(str.toLowerCase());
-            LOGGER.info("KeywordSearch:{},{}", str, contains);
-            return contains ? TRUE : FALSE;
+            LOGGER.info("KeywordSearch result: {},{}", str, contains);
+            return contains ? Result.CONTAIN : Result.NOT_CONTAIN;
         } catch (Exception e) {
-            LOGGER.error("KeywordSearch:{},{}", str, e);
-            return ERROR;
+            LOGGER.error("KeywordSearch error: {},{}", str, e);
+            return Result.ERROR;
         }
     }
     

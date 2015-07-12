@@ -3,11 +3,8 @@
  */
 package com.zhixiangli.keywordsearch;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,11 +29,12 @@ public class MobileDetect {
     
     static {
         try {
-            List<String> mobileKeywords = Files
-                .lines(Paths.get("src/main/resources/mobile_keywords")).map(String::toLowerCase)
-                .distinct().collect(Collectors.toList());
-            KEYWORD_SEARCH.add(mobileKeywords);
-        } catch (IOException e) {
+            String[] mobileKeywords = new String[] { "android", "webos", "iphone", "ipad", "ipod", "pocket", "psp",
+                "kindle", "avantgo", "blazer", "midori", "tablet", "palm", "maemo", "plucker", "phone", "blackberry",
+                "symbian", "iemobile", "mobile", "zunewp7", "windows phone", "opera mini", };
+            KEYWORD_SEARCH.add(Stream.of(mobileKeywords).map(String::toLowerCase).distinct()
+                .collect(Collectors.toList()));
+        } catch (Exception e) {
             LOGGER.error("MobileDetect failed to initialize: {}", e);
         }
     }
@@ -49,7 +47,7 @@ public class MobileDetect {
      *            user agent.
      * @return ERROR, TRUE, FALSE.
      */
-    public static int isMobile(String userAgent) {
+    public static Result isMobile(String userAgent) {
         return KEYWORD_SEARCH.contains(userAgent);
     }
     
