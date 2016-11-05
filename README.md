@@ -2,7 +2,7 @@ keyword-search
 ===============
 
 
-***[Chinese Version](http://www.zhixiangli.com/2015/04/13/%E5%A4%9A%E5%85%B3%E9%94%AE%E8%AF%8D%E5%8C%B9%E9%85%8D/)***
+***[Chinese Version](http://www.zhixiangli.com/2015/04/13/keywords-matching/)***
 
 Keyword search is implemented with Aho-Corasick Automaton, with a case of mobile detect.
 
