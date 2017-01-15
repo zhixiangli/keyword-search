@@ -25,7 +25,8 @@ public class MobileDetect {
         String[] mobileKeywords = new String[] {"android", "webos", "iphone", "ipad", "ipod", "pocket", "psp", "kindle",
                 "avantgo", "blazer", "midori", "tablet", "palm", "maemo", "plucker", "phone", "blackberry", "symbian",
                 "iemobile", "mobile", "zunewp7", "windows phone", "opera mini",};
-        KEYWORD_SEARCH.add(Stream.of(mobileKeywords).map(String::toLowerCase).distinct().collect(Collectors.toList()));
+        KEYWORD_SEARCH
+                .addAll(Stream.of(mobileKeywords).map(String::toLowerCase).distinct().collect(Collectors.toList()));
     }
 
     /**

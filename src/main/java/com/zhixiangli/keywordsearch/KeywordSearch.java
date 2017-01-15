@@ -42,7 +42,7 @@ public class KeywordSearch {
      * 
      * @param stringArray string array.
      */
-    public void add(CharSequence[] stringArray) {
+    public void addAll(CharSequence[] stringArray) {
         this.ahoCorasickAutomaton.init();
         Arrays.stream(stringArray).forEach(str -> this.ahoCorasickAutomaton.add(str));
         this.ahoCorasickAutomaton.build();
@@ -54,8 +54,8 @@ public class KeywordSearch {
      * 
      * @param stringCollection string collection.
      */
-    public void add(Collection<? extends CharSequence> stringCollection) {
-        this.add(stringCollection.stream().toArray(CharSequence[]::new));
+    public void addAll(Collection<? extends CharSequence> stringCollection) {
+        this.addAll(stringCollection.stream().toArray(CharSequence[]::new));
     }
 
     /**
