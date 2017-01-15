@@ -2,18 +2,27 @@ keyword-search
 ===============
 
 
-***[Chinese Version](http://www.zhixiangli.com/2015/04/13/keywords-matching/)***
-
 Keyword search is implemented with Aho-Corasick Automaton, with a case of mobile detect.
 
-Time Complexity: O(n), faster than other algorithms. 
+Time Complexity: O(n), faster than other algorithms, such as indexOf(). 
 
 
-##environmental requirements
+##Environmental Requirements
 
 JDK 1.8+
 
+##Instructions
 
-##instructions
+###Add Dependency
+	<dependency>
+		<groupId>com.zhixiangli</groupId>
+		<artifactId>keyword-search</artifactId>
+		<version>0.0.1</version>
+	</dependency>
 
-see **[keyword-search](https://github.com/zhixiangli/keyword-search)**
+###Example
+    KeywordSearch keywordSearch = new KeywordSearch();
+    // [must] add all keyword at one time.
+    keywordSearch.addAll(new String[] {"a", "bc", "def"});
+    System.out.println(keywordSearch.contains("bef")); // false
+    System.out.println(keywordSearch.contains("bobcome")); // true
