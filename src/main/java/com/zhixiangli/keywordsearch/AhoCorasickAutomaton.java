@@ -1,17 +1,17 @@
 /**
- * 
+ *
  */
 package com.zhixiangli.keywordsearch;
+
+import com.google.common.base.Preconditions;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.google.common.base.Preconditions;
-
 /**
  * implement of Aho-Corasick automaton.
- * 
+ *
  * @author lizhixiang
  *
  */
@@ -37,54 +37,54 @@ public class AhoCorasickAutomaton {
     /**
      * @param characterRange the range of character.
      */
-    public AhoCorasickAutomaton(int characterRange) {
+    public AhoCorasickAutomaton(final int characterRange) {
         this.characterRange = characterRange;
     }
 
     /**
-     * 
+     *
      * clear the trie.
      */
     public void clear() {
-        this.root = null;
+        root = null;
     }
 
     /**
-     * 
+     *
      * initialization.
      */
     public void init() {
-        this.root = new TrieNode();
-        this.root.fail = this.root;
+        root = new TrieNode();
+        root.fail = root;
 
         // root.next is null when root is initialized.
-        Arrays.fill(this.root.next, this.root);
+        Arrays.fill(root.next, root);
     }
 
     /**
-     * 
+     *
      * add all the string to trie.
-     * 
+     *
      * @param stringArray string array.
      */
-    public void add(CharSequence[] stringArray) {
+    public void add(final CharSequence[] stringArray) {
         Preconditions.checkNotNull(stringArray);
-        Arrays.stream(stringArray).forEach(str -> this.add(str));
+        Arrays.stream(stringArray).forEach(this::add);
     }
 
     /**
-     * 
+     *
      * add the char sequence to trie.
-     * 
+     *
      * @param charSequence char sequence.
      */
-    public void add(CharSequence charSequence) {
+    public void add(final CharSequence charSequence) {
         Preconditions.checkNotNull(charSequence);
-        TrieNode current = this.root;
+        TrieNode current = root;
         for (int i = 0; i < charSequence.length(); ++i) {
-            int j = charSequence.charAt(i);
-            Preconditions.checkArgument(j < this.characterRange);
-            if (this.root == current.next[j]) {
+            final int j = charSequence.charAt(i);
+            Preconditions.checkArgument(j < characterRange);
+            if (root == current.next[j]) {
                 current.next[j] = new TrieNode();
             }
             current = current.next[j];
@@ -93,20 +93,20 @@ public class AhoCorasickAutomaton {
     }
 
     /**
-     * 
+     *
      * whether the char sequence contains some string in trie.
-     * 
+     *
      * @param charSequence char sequence.
      * @return true if this charSequence contains some string.
      */
-    public boolean contains(CharSequence charSequence) {
+    public boolean contains(final CharSequence charSequence) {
         if (null == charSequence) {
             return false;
         }
-        TrieNode current = this.root;
+        TrieNode current = root;
         for (int i = 0; i < charSequence.length(); ++i) {
-            int j = charSequence.charAt(i);
-            Preconditions.checkArgument(j < this.characterRange);
+            final int j = charSequence.charAt(i);
+            Preconditions.checkArgument(j < characterRange);
             current = current.next[j];
             if (current.isEnd) {
                 return true;
@@ -116,19 +116,19 @@ public class AhoCorasickAutomaton {
     }
 
     /**
-     * 
+     *
      * build fail pointer.
      */
     public void build() {
-        Queue<TrieNode> queue = new LinkedList<>();
-        queue.add(this.root);
+        final Queue<TrieNode> queue = new LinkedList<>();
+        queue.add(root);
         while (!queue.isEmpty()) {
-            TrieNode current = queue.poll();
-            for (int i = 0; i < this.characterRange; ++i) {
-                if (this.root != current.next[i]) {
-                    TrieNode next = current.next[i];
+            final TrieNode current = queue.poll();
+            for (int i = 0; i < characterRange; ++i) {
+                if (root != current.next[i]) {
+                    final TrieNode next = current.next[i];
                     queue.add(next);
-                    if (current != this.root) {
+                    if (current != root) {
                         next.fail = current.fail.next[i];
                         next.isEnd = next.isEnd || next.fail.isEnd;
                     }
@@ -140,9 +140,9 @@ public class AhoCorasickAutomaton {
     }
 
     /**
-     * 
+     *
      * trie node.
-     * 
+     *
      * @author lizhixiang
      *
      */
@@ -167,11 +167,11 @@ public class AhoCorasickAutomaton {
          * initialization.
          */
         public TrieNode() {
-            this.isEnd = false;
-            this.fail = root;
-            this.next = new TrieNode[characterRange];
+            isEnd = false;
+            fail = root;
+            next = new TrieNode[characterRange];
             if (null != root) {
-                Arrays.fill(this.next, root);
+                Arrays.fill(next, root);
             }
         }
 

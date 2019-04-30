@@ -1,22 +1,21 @@
 package com.zhixiangli.keywordsearch;
 
-import static org.junit.Assert.assertEquals;
+import com.google.common.base.Stopwatch;
+import org.junit.Test;
 
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
-
-import com.google.common.base.Stopwatch;
+import static org.junit.Assert.assertEquals;
 
 /**
- * 
+ *
  */
 
 /**
  * test of Aho-Corasick automaton.
- * 
+ *
  * @author lizhixiang
  *
  */
@@ -24,7 +23,7 @@ public class AhoCorasickAutomatonTest {
 
     @Test
     public void test() {
-        Random random = new SecureRandom();
+        final Random random = new SecureRandom();
 
         AhoCorasickAutomaton ac = new AhoCorasickAutomaton();
 
@@ -35,23 +34,23 @@ public class AhoCorasickAutomatonTest {
         while (cnt-- > 0) {
 
             // keywords.
-            String[] keywords = new String[random.nextInt(Short.MAX_VALUE) + 1];
+            final String[] keywords = new String[random.nextInt(Short.MAX_VALUE) + 1];
             for (int i = 0; i < keywords.length; ++i) {
                 keywords[i] = String.valueOf(random.nextInt(Integer.MAX_VALUE));
             }
 
             // char sequence.
-            StringBuilder sb = new StringBuilder();
-            int length = random.nextInt(Short.MAX_VALUE) + 1;
+            final StringBuilder sb = new StringBuilder();
+            final int length = random.nextInt(Short.MAX_VALUE) + 1;
             for (int i = 0; i < length; ++i) {
                 sb.append(random.nextInt(10));
             }
 
             // first way: indexOf.
-            Stopwatch stopwatch = Stopwatch.createStarted();
+            final Stopwatch stopwatch = Stopwatch.createStarted();
             boolean result0 = false;
-            for (int i = 0; i < keywords.length; ++i) {
-                if (sb.indexOf(keywords[i]) >= 0) {
+            for (final String keyword : keywords) {
+                if (sb.indexOf(keyword) >= 0) {
                     result0 = true;
                     break;
                 }
@@ -66,7 +65,7 @@ public class AhoCorasickAutomatonTest {
             ac.build();
             stopwatch.reset();
             stopwatch.start();
-            boolean result1 = ac.contains(sb);
+            final boolean result1 = ac.contains(sb);
             stopwatch.stop();
             acTotal += stopwatch.elapsed(TimeUnit.MICROSECONDS);
             System.out.println("ac: " + stopwatch);
